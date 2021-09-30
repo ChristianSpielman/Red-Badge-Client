@@ -105,7 +105,7 @@ class Register extends React.Component<RegisterProps, RegisterState> { //these a
     render() {
         const {classes} =  this.props; //this is neccassary 
         return(
-            <Container component="main" maxWidth="sm">
+            <div>
 				<CssBaseline />
 				<div className={classes.paper}>
 					<Typography component="h1" variant="h5"><code>Welcome to My Travel Blog</code></Typography>
@@ -132,7 +132,7 @@ class Register extends React.Component<RegisterProps, RegisterState> { //these a
 						<Button style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Register</Button>
 					</form>
 				</div>
-			</Container>
+			</div>
         );
     }
 }

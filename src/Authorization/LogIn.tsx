@@ -87,7 +87,7 @@ class LogIn extends React.Component<LogInProps, LogInState> {
     render() {
         const {classes} =  this.props;
         return(
-            <Container component="main" maxWidth="xs">
+            <div>
 				<CssBaseline />
 				<div className={classes.paper}>
 					<Typography component="h1" variant="h5"><code>Welcome to My Travel Blog</code></Typography>
@@ -108,7 +108,7 @@ class LogIn extends React.Component<LogInProps, LogInState> {
 						<Button style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Log In</Button>
 					</form>
 				</div>
-			</Container>
+			</div>
         );
     }
 }

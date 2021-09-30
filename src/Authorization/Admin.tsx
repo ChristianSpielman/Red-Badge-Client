@@ -67,4 +67,4 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
 	}
 }
 
-export default Admin;
+export default withStyles(styles)(Admin)

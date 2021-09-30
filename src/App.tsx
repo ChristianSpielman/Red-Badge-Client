@@ -59,26 +59,26 @@ class App extends React.Component<AppProps, AppState> {
 	}
 
 	
-	// protectedViews = () => {	        
-	// 	if(this.state.admin ){
-	// 		console.log(`Admin: ${this.state.admin}`)
-	// 		return (<Admin clearToken={this.clearToken}/>)
-	// 	}
-	// 	else if(this.state.sessionToken) {
-	// 		console.log(`Blog: ${this.state.sessionToken}`)
-	// 		return (<Blog admin={this.state.admin} token={this.state.sessionToken} clearToken={this.clearToken}/>) 
-	// 	}
-	// 	else{
-	// 		console.log(`Auth: ${this.state.sessionToken}`)
-	// 		return (<Auth updateToken={this.updateToken} clearToken={this.clearToken}/>)
-	// 	}
-	// }
+	protectedViews = () => {	        
+		if(this.state.admin ){
+			console.log(`Admin: ${this.state.admin}`)
+			return (<Admin clearToken={this.clearToken}/>)
+		}
+		else if(this.state.sessionToken) {
+			console.log(`Blog: ${this.state.sessionToken}`)
+			return (<Blog admin={this.state.admin} token={this.state.sessionToken} clearToken={this.clearToken}/>) 
+		}
+		else{
+			console.log(`Auth: ${this.state.sessionToken}`)
+			return (<Auth updateToken={this.updateToken} clearToken={this.clearToken}/>)
+		}
+	}
 
 	render() {
 		return (
 			<div>
-				<Blog admin={this.state.admin} token={this.state.sessionToken} clearToken={this.clearToken}/>
-				{/* {this.protectedViews()} */}
+				{/* <Blog admin={this.state.admin} token={this.state.sessionToken} clearToken={this.clearToken}/> */}
+				{this.protectedViews()}
 			</div>
 		);
 	}
