@@ -7,6 +7,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 // import Box from '@material-ui/core/Box';
+import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
+import DateFnsUtls from '@date-io/date-fns';
+import VacationList from '../VacationBlog/VacationList';
 
 import APIURL from '../helpers/enviroment';
 
@@ -18,10 +21,11 @@ interface BlogEntryProps extends WithStyles<typeof styles> {
 }
 
 interface BlogEntryState {
-	picture: string,
+	photo: string,
 	title: string,
 	date: string,
 	description: string,
+	selectedDate: Date,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -51,10 +55,11 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
     constructor(props:BlogEntryProps){
         super(props)
         const state = {
-			picture: '',
+			photo: '',
 			title: '',
 			date: '',
 			description: '',
+			selectedDate: new Date(),
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -64,23 +69,30 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         fetch(`${APIURL}/vacation/create`,{
             method: 'POST',
 			body: JSON.stringify({
-				picture: this.state.picture,
+				photo: this.state.photo,
 				title: this.state.title,
 				date: this.state.date,
 				description: this.state.description
 			}),
 			headers: new Headers({
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${this.props.token}`,
 			}),
         })
         .then((res) => res.json())
+		.then(() => {
+			this.setState({photo: ''});
+			this.setState({title: ''});
+			this.setState({date: ''});
+			this.setState({description: ''});
+		})
         // .then((data) => props.updateToken(data.sessionToken))
         .catch(e => console.log(e))
     };
 
     handlePictureChange = (event: any) => {
         event.preventDefault();
-        this.setState({picture: event.target.value});
+        this.setState({photo: event.target.value});
     };
 
     handleTitleChange = (event: any) => {
@@ -121,6 +133,15 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<TextField className={classes.input} onChange={this.handleDateChange} autoComplete="date" name="date" variant="outlined" required fullWidth id="date" label="Date" autoFocus />
+
+								{/* <MuiPickersUtilsProvider utils={DateFnsUtls}>
+									<DateTimePicker 
+										label="DateTimePicker"
+										inputVariant="outlined"
+										value={this.state.selectedDate}
+										onChange={newDate => this.setState({selectedDate: newDate})}
+									/>
+								</MuiPickersUtilsProvider> */}
 							</Grid>
 							<Grid item xs={12} >
 								<TextField className={classes.input} onChange={this.handleDescriptionChange} multiline rows={10} autoComplete="description" name="discription" variant="outlined" required fullWidth id="description" label="Description" autoFocus />
@@ -129,6 +150,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
 						<Button style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Post Blog</Button>
 					</form>
 				</div>
+				<VacationList token={this.props.token} />
 			</Container>
         );
     }

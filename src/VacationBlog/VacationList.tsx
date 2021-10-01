@@ -28,18 +28,17 @@ import APIURL from '../helpers/enviroment';
 
 
 interface VacationListProps extends WithStyles<typeof styles> {
-	clearToken: any;
 	token: string;
-	admin: boolean;
-
 }
 
-
-interface VacationListState {
-	picture: string,
+interface IVacataionList {
+	photo: string,
 	title: string,
 	date: string,
-	description: string,
+	descrtiption: string,
+}
+interface VacationListState {
+	blogArray: Array<IVacataionList>,
 }
 
 
@@ -70,58 +69,47 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
 	constructor(props:VacationListProps){
 		super(props)
 		const state = {
-			picture: '',
-			title: '',
-			date: '',
-			description: '',
+			blogArray: [],
 		}
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.getData = this.getData.bind(this);
 	}
 
-	handleSubmit = (event: any) => {
-		event.preventDefault();
-		fetch(`${APIURL}/vacation/edit`,{
-			method: 'POST',
-			body: JSON.stringify({
-				picture: this.state.picture,
-				title: this.state.title,
-				date: this.state.date,
-				description: this.state.description
-			}),
+	componentDidMount = () => {
+		this.getData();
+	};
+
+	getData = () => {
+		fetch(`${APIURL}/vacation/getAllBlogsByUser`,{
+			method: 'GET',
 			headers: new Headers({
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${this.props.token}`,
 			}),
 		})
 		.then((res) => res.json())
-		// .then((data) => props.updateToken(data.sessionToken))
+		.then((data) => {
+			// console.log('data', data);
+			if(data) {
+				this.setState({blogArray: data});
+				// console.log('blogArray', this.state.blogArray);
+			}
+		})
 		.catch(e => console.log(e))
-	};
-
-	handlePictureChange = (event: any) => {
-		event.preventDefault();
-		this.setState({picture: event.target.value});
-	};
-
-	handleTitleChange = (event: any) => {
-		event.preventDefault();
-		this.setState({title: event.target.value});
-	};
-
-	handleDateChange = (event: any) => {
-		event.preventDefault();
-		this.setState({date: event.target.value});
-	};
-
-	handleDescriptionChange = (event: any) => {
-		event.preventDefault();
-		this.setState({description: event.target.value});
 	};
 
 	render() {
 		const {classes} =  this.props; //this is neccassary 
 		return(
 			<div>
-				<h1>Vacation List:</h1>
+				{/* {this.state.blogArray.map((record, i) => (
+					<div>
+						<p key={i}></p>
+						<p>record.photo</p><br/>
+						<p>record.title</p><br/>
+						<p>record.date</p><br/>
+						<p>record.description</p><br/>
+					</div>
+				))} */}
 			</div>
 		);
 	}
