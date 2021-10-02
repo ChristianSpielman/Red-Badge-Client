@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import APIURL from '../helpers/enviroment';
 import { Email } from '@material-ui/icons';
 
+
 interface RegisterProps extends WithStyles<typeof styles> {
 	updateToken: any;
 	clearToken: any;
@@ -108,7 +109,7 @@ class Register extends React.Component<RegisterProps, RegisterState> { //these a
             <div>
 				<CssBaseline />
 				<div className={classes.paper}>
-					<Typography component="h1" variant="h5"><code>Welcome to My Travel Blog</code></Typography>
+					<Typography component="h1" variant="h5">Welcome to My Travel Blog</Typography>
 					<br />
 					{/* <Avatar className={classes.avatar}>
 							<LockOutlinedIcon />
@@ -117,16 +118,16 @@ class Register extends React.Component<RegisterProps, RegisterState> { //these a
 					<form className={classes.form} onSubmit={this.handleSubmit}>
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>
-								<TextField className={classes.input} onChange={this.handleFirstNameChange} autoComplete="fname" name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus />
+								<TextField className={classes.input} onChange={this.handleFirstNameChange} autoComplete="fname" name="firstName" variant="standard" required fullWidth id="firstName" label="First Name" autoFocus />
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<TextField className={classes.input} onChange={this.handleLastNameChange} autoComplete="lname" name="lastName" variant="outlined" required fullWidth id="lastName" label="Last Name" autoFocus />
+								<TextField className={classes.input} onChange={this.handleLastNameChange} autoComplete="lname" name="lastName" variant="standard" required fullWidth id="lastName" label="Last Name" autoFocus />
 							</Grid>
 							<Grid item xs={12} >
-								<TextField className={classes.input} onChange={this.handleEmailChange} autoComplete="email" name="email" variant="outlined" required fullWidth id="email" label="Email" autoFocus />
+								<TextField className={classes.input} onChange={this.handleEmailChange} autoComplete="email" name="email" variant="standard" required fullWidth id="email" label="Email" autoFocus />
 							</Grid>
 							<Grid item xs={12} >
-								<TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" name="password" variant="outlined" required fullWidth id="password" label="Password" autoFocus />
+								<TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
 							</Grid>
 						</Grid>
 						<Button style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Register</Button>

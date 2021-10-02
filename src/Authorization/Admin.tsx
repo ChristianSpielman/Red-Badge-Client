@@ -60,7 +60,7 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
 				<Button onClick={this.props.clearToken} color="primary">Logout</Button>
 				<CssBaseline />
 				<div className="divMain">
-					<Typography component="h1" variant="h5"><code>Admin Page</code></Typography>
+					<Typography component="h1" variant="h5">Admin Page</Typography>
 				</div>
 			</Container>
 		)

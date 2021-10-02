@@ -8,10 +8,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import APIURL from '../helpers/enviroment';
+import Box from '@material-ui/core/Box'
+
 
 // import Link from '@material-ui/core/Link';
 // import Box from '@material-ui/core/Box';
 // import APIURL from '../helpers/enviroment';
+
 
 interface LogInProps extends WithStyles<typeof styles> {
 	updateToken: any;
@@ -44,6 +47,9 @@ const styles = ({palette, spacing}: Theme) => createStyles({
 	  submit: {
 		margin: spacing(3, 0, 0),
 	  },
+	  typography: {
+		fontFamily: 'Comfortaa',
+	  }
 });
 
 class LogIn extends React.Component<LogInProps, LogInState> {
@@ -90,7 +96,7 @@ class LogIn extends React.Component<LogInProps, LogInState> {
             <div>
 				<CssBaseline />
 				<div className={classes.paper}>
-					<Typography component="h1" variant="h5"><code>Welcome to My Travel Blog</code></Typography>
+					<Typography component="h1" variant="h5">Welcome to My Travel Blog</Typography>
 					<br />
 					{/* <Avatar className={classes.avatar}>
 							<LockOutlinedIcon />
@@ -99,13 +105,15 @@ class LogIn extends React.Component<LogInProps, LogInState> {
 					<form className={classes.form} onSubmit={this.handleSubmit}>
 						<Grid container spacing={2}>
 							<Grid item xs={12} >
-								<TextField className={classes.input} onChange={this.handleEmailChange} autoComplete="email" name="email" variant="outlined" required fullWidth id="email" label="Email" autoFocus />
+								<TextField className={classes.input} onChange={this.handleEmailChange} autoComplete="email" name="email" variant="standard" required fullWidth id="email" label="Email" autoFocus />
 							</Grid>
 							<Grid item xs={12} >
-								<TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" name="password" variant="outlined" required fullWidth id="password" label="Password" autoFocus />
+								<TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
 							</Grid>
 						</Grid>
-						<Button style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Log In</Button>
+						<Box >
+						<Button size="small" style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Log In</Button>
+						</Box>
 					</form>
 				</div>
 			</div>

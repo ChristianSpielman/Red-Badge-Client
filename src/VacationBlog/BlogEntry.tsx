@@ -26,6 +26,7 @@ interface BlogEntryState {
 	date: string,
 	description: string,
 	selectedDate: Date,
+	blogArray: any[],
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -60,9 +61,86 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
 			date: '',
 			description: '',
 			selectedDate: new Date(),
+			blogArray: [],
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+	async componentDidMount(){
+		const response = await fetch(`${APIURL}/vacation/getAllBlogsByUser`,{
+			method: 'GET',
+			headers: new Headers({
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${this.props.token}`,
+			}),
+		});
+		const json = await response.json();
+		if(json){
+			this.setState({blogArray: json});
+			console.log("blogArray",this.state.blogArray);
+		}
+	}
+
+	//delete & update function
+	handleDelete = () => {
+		fetch(`${APIURL}/vacation/delte`,{
+			method: 'DELETE',
+			headers: new Headers({
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${this.props.token}`,
+			}),
+		})
+		.then((res) => res.json())
+		.then(() => {
+				//
+		})
+		.catch(e => console.log(e))
+	};
+
+	handleUpdate = () => {
+		fetch(`${APIURL}/vacation/update`,{
+			method: 'PUT',
+			body: JSON.stringify({
+				photo: this.state.photo,
+				title: this.state.title,
+				date: this.state.date,
+				description: this.state.description
+			}),
+			headers: new Headers({
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${this.props.token}`,
+			}),
+		})
+		.then((res) => res.json())
+		.then(() => {
+			//
+		})
+		.catch(e => console.log(e))
+	};
+
+
+
+
+
+	// componentDidMount = () => {
+	// 	console.log("blogArray",this.state.blogArray);
+	// 	this.getData()
+	// }
+
+	// getData = () => {
+	// 	fetch(`${APIURL}/vacation/getAllBlogsByUser`,{
+	// 		method: 'GET',
+	// 		headers: new Headers({
+	// 			"Content-Type": "application/json",
+	// 			"Authorization": `Bearer ${this.props.token}`,
+	// 		}),
+	// 	})
+	// 	.then((res) => res.json())
+	// 	.then((data) => 
+	// 		this.setState({blogArray: data})
+	// 	)
+	// 	.catch((err) => console.log(err))
+	// };
 
     handleSubmit = (event: any) => {
         event.preventDefault();
@@ -117,39 +195,43 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
 				<Button onClick={this.props.clearToken} style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Logout</Button>
 				<CssBaseline />
 				<div className={classes.paper}>
-					<Typography component="h1" variant="h5"><code>Create A Vacation Blog!</code></Typography>
+					<Typography component="h1" variant="h5" color="primary">Create A Vacation Blog!</Typography>
 					<br />
 					{/* <Avatar className={classes.avatar}>
 							<LockOutlinedIcon />
 					</Avatar> */}
-					<Typography component="h1" variant="h5"><code>Vacation Details :</ code></Typography>
+					<Typography component="h1" variant="h5">Vacation Details :</Typography>
 					<form className={classes.form} onSubmit={this.handleSubmit}>
 						<Grid container spacing={2}>
                         <Grid item xs={12} >
-								<TextField className={classes.input} onChange={this.handlePictureChange} autoComplete="picture" name="picture" variant="outlined" required fullWidth id="picture" label="Picture" autoFocus />
+								<TextField className={classes.input} onChange={this.handlePictureChange} autoComplete="picture" name="picture" variant="standard" required fullWidth id="picture" label="Picture" autoFocus />
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<TextField className={classes.input} onChange={this.handleTitleChange} autoComplete="title" name="title" variant="outlined" required fullWidth id="title" label="Title" autoFocus />
+								<TextField className={classes.input} onChange={this.handleTitleChange} autoComplete="title" name="title" variant="standard" required fullWidth id="title" label="Title" autoFocus />
 							</Grid>
 							<Grid item xs={12} sm={6}>
-								<TextField className={classes.input} onChange={this.handleDateChange} autoComplete="date" name="date" variant="outlined" required fullWidth id="date" label="Date" autoFocus />
-
-								{/* <MuiPickersUtilsProvider utils={DateFnsUtls}>
-									<DateTimePicker 
-										label="DateTimePicker"
-										inputVariant="outlined"
-										value={this.state.selectedDate}
-										onChange={newDate => this.setState({selectedDate: newDate})}
+									<TextField 
+										id="date"
+										label="Date"
+										type="date"
+										onChange={this.handleDateChange}
+										defaultValue="2021-01-1"
+										// className={classes.textField}
+										fullWidth
+										InputLabelProps={{
+										shrink: true,
+										}}
 									/>
-								</MuiPickersUtilsProvider> */}
 							</Grid>
 							<Grid item xs={12} >
-								<TextField className={classes.input} onChange={this.handleDescriptionChange} multiline rows={10} autoComplete="description" name="discription" variant="outlined" required fullWidth id="description" label="Description" autoFocus />
+								<TextField className={classes.input} onChange={this.handleDescriptionChange} multiline rows={10} autoComplete="description" name="discription" variant="standard" required fullWidth id="description" label="Description" autoFocus />
 							</Grid>
 						</Grid>
 						<Button style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Post Blog</Button>
 					</form>
 				</div>
+				{/* {console.log(this.state.blogArray)} */}
+				{/* <VacationList token={this.props.token} blogArray={this.state.blogArray} /> */}
 				<VacationList token={this.props.token} />
 			</Container>
         );
