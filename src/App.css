@@ -3,6 +3,11 @@
   font-family: "Comfortaa";
 }
 
+.wrapper {
+  margin-top: 80px;
+  padding: 20px;
+  text-align: center;
+}
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;

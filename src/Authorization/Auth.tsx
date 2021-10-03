@@ -7,19 +7,19 @@ import Container from '@material-ui/core/Container';
 
 
 interface AuthProps extends WithStyles<typeof styles> {
-	updateToken: any;
-	clearToken: any;
+    updateToken: any;
+    clearToken: any;
 }
 
 interface AuthState {
-	loginToggle: boolean,
+    loginToggle: boolean,
     buttonLabel: string,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
-	submit: {
-		margin: spacing(3, 0, 2),
-	},
+    submit: {
+        margin: spacing(3, 0, 2),
+    },
 });
 
 class Auth extends React.Component<AuthProps, AuthState> {
