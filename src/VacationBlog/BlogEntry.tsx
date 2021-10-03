@@ -72,7 +72,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
     componentDidMount = () => {
         this.getData();
     }
-    
+
     getData = () => {
         fetch(`${APIURL}/vacation/getAllBlogsByUser`,{
             method: 'GET',
@@ -178,19 +178,19 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                         {/* <Avatar className={classes.avatar}>
                                 <LockOutlinedIcon />
                         </Avatar> */}
-                        <Typography component="h1" variant="h5">Vacation Details :</Typography>
+                        <Typography component="h1" variant="h5" color="primary">Vacation Details :</Typography>
                         <form className={classes.form} onSubmit={this.handleSubmit}>
                             <Grid container spacing={2}>
                             <Grid item xs={12} >
                                     <TextField 
 									className={classes.input} 
 									onChange={this.handleChange} 
-									autoComplete="picture" 
-									name="picture" 
+									autoComplete="photo" 
+									name="photo" 
 									variant="standard" 
 									required fullWidth 
-									id="picture" 
-									label="Picture" 
+									id="photo" 
+									label="Photo" 
 									autoFocus />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -224,7 +224,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
 									onChange={this.handleChange} 
 									multiline rows={10} 
 									autoComplete="description" 
-									name="discription" 
+									name="description" 
 									variant="standard" 
 									fullWidth 
 									id="description" 

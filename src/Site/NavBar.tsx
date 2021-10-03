@@ -15,6 +15,7 @@ interface NavBarProps {
 	clearToken: any,
 	token: string,
 	admin: boolean,
+	// blogArray: any[],
 	// classes: any,
 }
 
@@ -54,20 +55,15 @@ render() {
 				<AppBar position="fixed">
 					<Toolbar>
 						<Typography variant="h6">Vacation Blog</Typography>
-							<Button color="inherit"><Link to='/allBlogs'>View All</Link></Button>
+							<Button color="primary"><Link to='/allBlogs'>View All</Link></Button>
 							<Button color="inherit"><Link to="/blogEntry">Create a Blog</Link></Button>
-							{/* <Button color="inherit"><Link to='/savings'>Savings</Link></Button>
-							<Button color="inherit"><Link to='/settings'>Settings</Link></Button> */}
 							<Button color="inherit" onClick={this.props.clearToken}><Link to=''>Logout</Link></Button>
 					</Toolbar>
 				</AppBar>
 			<Switch>
-				<Route exact path="/"><AllBlogs token={this.props.token} /></Route>
-				<Route exact path="/allBlogs"><AllBlogs token={this.props.token} /></Route>
+				<Route exact path="/"><AllBlogs token={this.props.token}/></Route>
+				<Route exact path="/allBlogs"><AllBlogs token={this.props.token}/></Route>
 				<Route exact path="/blogEntry"><BlogEntry token={this.props.token} clearToken={this.props.clearToken} admin={this.props.admin} /></Route>
-				{/* <Route exact path="/checking"><Checking token={this.props.token} /></Route>
-				<Route exact path="/savings"><Savings token={this.props.token} /></Route> */}
-				{/* <Route exact path="/settings"><Settings clearToken={this.props.clearToken} token={this.props.token}/></Route> */}
 			</Switch>
 			</Router>
 		</div>
