@@ -57,7 +57,7 @@ class App extends React.Component<AppProps, AppState> {
 
     protectedViews = () => {            
         if(this.state.admin ){
-            return (<Admin clearToken={this.clearToken}/>)
+            return (<Admin token={this.state.sessionToken} clearToken={this.clearToken}/>)
         }
         else if(this.state.sessionToken) {
             return (<NavBar admin={this.state.admin} token={this.state.sessionToken} clearToken={this.clearToken}/>) 
