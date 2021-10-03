@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
+import VacationEditModal from './VacationEditModal';
 
 import CardMedia from '@material-ui/core/CardMedia';
 
@@ -15,9 +16,20 @@ interface VacationListProps extends WithStyles<typeof styles> {
     token: string;
     blogArray: any[],
 	handleDelete: any,
+    handleUpdate: any,
+}
+
+interface BlogData {
+	id: number,
+	photo: string,
+    title: string,
+    date: string,
+    description: string,
 }
 
 interface VacationListState {
+    blogData: BlogData[],
+    editOpen: boolean,
 }
 
 
@@ -47,16 +59,24 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
     constructor(props:VacationListProps){
         super(props)
         this.state = {
+            blogData: [],
+            editOpen: false,
         }
     }
 
     componentDidMount = () => {
     }
 
+    handleOpen = (event: any, record: {}) => {
+		event.preventDefault();
+        // this.setState({blogData: record})
+        this.setState({editOpen: true})
+	}
+
     render() {
         const {classes} =  this.props; //this is neccassary 
         return(
-            <div className="wrapper">
+            <div>
                 <h1 className="text-center">Past Vacations:</h1>
 				<Grid container spacing={1}>
                 {this.props.blogArray.map((record, i) => (
@@ -79,13 +99,14 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
 								</Typography>
 							</CardContent>
 							<CardActions>
-								<Button size="small">Edit</Button>
+								<Button size="small" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
 								<Button size="small" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
 							</CardActions>
 						</Card>
 					</Grid>
                 ))}
 				</Grid>
+                {this.state.editOpen ? <VacationEditModal handleUpdate={this.props.handleUpdate} blogData={this.state.blogData}/> : "" }
             </div>
         );
     }

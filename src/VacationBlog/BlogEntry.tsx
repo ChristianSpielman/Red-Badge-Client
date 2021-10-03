@@ -72,6 +72,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
     componentDidMount = () => {
         this.getData();
     }
+    
     getData = () => {
         fetch(`${APIURL}/vacation/getAllBlogsByUser`,{
             method: 'GET',
@@ -241,7 +242,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                         </form>
                     </div>
                 </Container>
-                <VacationList token={this.props.token} blogArray={this.state.blogArray} handleDelete={this.handleDelete} />
+                <VacationList token={this.props.token} blogArray={this.state.blogArray} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate}/>
             </div>
         );
     }
