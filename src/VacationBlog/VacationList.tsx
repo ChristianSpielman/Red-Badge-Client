@@ -78,8 +78,11 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
     render() {
         const {classes} =  this.props; //this is neccassary 
         return(
-            <div>
-                <h1 className="text-center">Past Vacations:</h1>
+            <div className="wrapper">
+                <br/>
+                <hr/>
+                <Typography component="h1" variant="h3" color="primary">Past Vacations:</Typography>
+                <br/>
                 <Grid container spacing={1}>
                 {this.props.blogArray.map((record, i) => (
                     <Grid item xs={3} key={i}>
@@ -96,7 +99,8 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
                                 <Typography className={classes.pos} color="textSecondary">
                                     {record.date}
                                 </Typography>
-                                <Typography variant="body2" component="p">
+                                <Typography id="filled-multiline-static"
+                                    variant="body2" component="p">
                                     {record.description}
                                 </Typography>
                             </CardContent>

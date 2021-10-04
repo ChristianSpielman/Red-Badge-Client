@@ -156,12 +156,12 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                     color="primary">Logout</Button>
                     <CssBaseline />
                     <div className={classes.paper}>
-                        <Typography component="h1" variant="h5" color="primary">Create A Vacation Blog!</Typography>
+                        <Typography component="h1" variant="h3" color="primary">Create A Vacation Blog</Typography>
                         <br />
                         {/* <Avatar className={classes.avatar}>
                                 <LockOutlinedIcon />
                         </Avatar> */}
-                        <Typography component="h1" variant="h5" color="primary">Vacation Details :</Typography>
+                        <Typography component="h1" variant="h4" color="primary">Vacation Details:</Typography>
                         <form className={classes.form} onSubmit={this.handleSubmit}>
                             <Grid container spacing={2}>
                             <Grid item xs={12} >

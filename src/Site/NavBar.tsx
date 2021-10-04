@@ -55,7 +55,7 @@ render() {
 				<AppBar position="fixed">
 					<Toolbar>
 						<Typography variant="h6">Vacation Blog</Typography>
-							<Button color="primary" style={{backgroundColor: "lightblue"}}><Link to='/allBlogs'>View All</Link></Button>
+							<Button color="primary"><Link to='/allBlogs'>View All</Link></Button>
 							<Button color="inherit"><Link to="/blogEntry">Create a Blog</Link></Button>
 							<Button color="inherit" onClick={this.props.clearToken}><Link to=''>Logout</Link></Button>
 					</Toolbar>

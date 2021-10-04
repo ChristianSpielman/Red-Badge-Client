@@ -17,6 +17,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 // import Paper from '@material-ui/core/Paper';
 import APIURL from '../helpers/enviroment';
 
@@ -146,7 +147,11 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
         const {classes} = this.props;
         return(
             <div>
+                <Box
+                    component="span"
+                    m={1}>
             <Button onClick={this.props.clearToken} variant="contained" color="primary">Logout</Button>
+            </Box>
                 <Container className="wrapper" component="main">
                     <CssBaseline />
                     <div className="divMain">
@@ -156,9 +161,9 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
                             <Table className={classes.table} stickyHeader aria-label="sticky table">{/*sticky header*/}
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell >First Name</TableCell>
-                                        <TableCell >Last Name</TableCell>
-                                        <TableCell >Email</TableCell>
+                                        <TableCell ><Typography variant="h4" color="primary">First Name </Typography></TableCell>
+                                        <TableCell ><Typography variant="h4" color="primary">Last Name</Typography></TableCell>
+                                        <TableCell ><Typography variant="h4" color="primary">Email</Typography></TableCell>
                                         <TableCell ></TableCell>
                                         <TableCell ></TableCell>
                                     </TableRow>
@@ -167,9 +172,9 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
                                     {this.state.usersArray.filter(row => !row.admin).map((row, i) => (
                                         <TableRow key={i}>
                                             
-                                            <TableCell >{row.firstName}</TableCell>
-                                            <TableCell >{row.lastName}</TableCell>
-                                            <TableCell >{row.email}</TableCell>
+                                            <TableCell ><Typography variant="h6" color="primary">{row.firstName}</Typography></TableCell>
+                                            <TableCell ><Typography variant="h6" color="primary">{row.lastName}</Typography></TableCell>
+                                            <TableCell ><Typography variant="h6" color="primary">{row.email}</Typography></TableCell>
                                             <TableCell ><Button variant="contained" color="primary" onClick={(e) => this.handleOpen(e)}>Edit</Button></TableCell>
                                             <TableCell ><Button variant="contained" color="secondary" onClick={() => this.deleteUser(row.id)}>Delete</Button></TableCell>
                                         </TableRow>
