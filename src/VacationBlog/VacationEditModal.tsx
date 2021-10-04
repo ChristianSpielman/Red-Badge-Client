@@ -1,8 +1,5 @@
 import React from 'react';
 import { withStyles, Theme, createStyles, WithStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -14,25 +11,16 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-
+import FormControl from '@material-ui/core/FormControl';
 import APIURL from '../helpers/enviroment';
 
-
 interface VacationEditModalProps extends WithStyles<typeof styles> {
-    handleUpdate: any,
-    // mode: boolean,
-    blogData: {},
+    blogData: any,
+    handleClose: any,
+    editOpen: boolean,
+    token: string,
 }
-
-// interface BlogData {
-//  id: number,
-//  photo: string,
-//     title: string,
-//     date: string,
-//     description: string,
-// }
 
 interface VacationEditModalState {
     editOpen: boolean,
@@ -41,6 +29,7 @@ interface VacationEditModalState {
     title: string,
     date: string,
     description: string,
+    update: any,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -72,38 +61,42 @@ const styles = ({palette, spacing}: Theme) => createStyles({
     },
 });
 
-// const useStyles = makeStyles((theme: Theme) =>
-//   createStyles({
-//     modal: {
-//       display: 'flex',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//     },
-//     paper: {
-//       backgroundColor: theme.palette.background.paper,
-//       border: '2px solid #000',
-//       boxShadow: theme.shadows[5],
-//       padding: theme.spacing(2, 4, 3),
-//     },
-//   }),
-// );
-
 class VacationEditModal extends React.Component<VacationEditModalProps, VacationEditModalState> {
     constructor(props: VacationEditModalProps){
         super(props)
         this.state = {
             editOpen: true,
-            id: 0,
-            photo: '',
-            title: '',
-            date: '',
-            description: '',
+            id: props.blogData.id,
+            photo: props.blogData.photo,
+            title: props.blogData.title,
+            date: props.blogData.date,
+            description: props.blogData.description,
+            update: {},
         }
     }
 
-    handleClose = () => {
-        this.setState({editOpen: false})
-    }
+    handleUpdate = () => {
+        fetch(`${APIURL}/vacation/update/${this.state.id}`,{
+            method: 'PUT',
+            body: JSON.stringify({
+                photo: this.state.photo,
+                title: this.state.title,
+                date: this.state.date,
+                description: this.state.description
+            }),
+            headers: new Headers({
+                "Content-Type": "application/json",
+                'Accept': 'application/json',
+                "Authorization": this.props.token,
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            // this.props.handleClose();
+        })
+        .catch(e => console.log(e))
+    };
 
     handleChange = (event: any) => {
         event.preventDefault();
@@ -111,18 +104,13 @@ class VacationEditModal extends React.Component<VacationEditModalProps, Vacation
         this.setState(Object.assign(this.state, {[name]: value}));
     };
 
-    componentDidMount = () => {
-        console.log("blogData",this.props.blogData)
-        // this.setState({id: this.props.blogData.id})
-    }
-
     render(){
         const {classes} = this.props;
         return (
             <div>
                 <Dialog
-                    open={this.state.editOpen}
-                    onClose={this.handleClose}
+                    open={this.props.editOpen}
+                    onClose={this.props.handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
@@ -135,76 +123,84 @@ class VacationEditModal extends React.Component<VacationEditModalProps, Vacation
                             <CardMedia
                                 component='img'
                                 height= "140"
-                                // image= { }
+                                image= {this.props.blogData.photo}
                             />
-                            {/* <Typography component="h1" variant="h5">Vacation Details :</Typography> */}
-                            <form className={classes.form} onSubmit={this.props.handleUpdate}>
+                            <form className={classes.form} onSubmit={this.handleUpdate}>
+                                <FormControl>
                                 <Grid container>
                                     <Grid item xs={12} >
                                         <TextField 
-                                        className={classes.input} 
-                                        onChange={this.handleChange} 
-                                        autoComplete="picture" 
-                                        name="picture" 
-                                        variant="standard" 
-                                        required fullWidth 
-                                        id="picture" 
-                                        label="Picture" 
-                                        autoFocus />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField 
-                                        className={classes.input} 
-                                        onChange={this.handleChange} 
-                                        autoComplete="title" 
-                                        name="title" 
-                                        variant="standard" 
-                                        required fullWidth 
-                                        id="title" 
-                                        label="Title" 
-                                        autoFocus />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField 
-                                            name="date"
-                                            id="date"
-                                            label="Date"
-                                            type="date"
-                                            onChange={this.handleChange}
-                                            // className={classes.textField}
-                                            fullWidth
+                                            id="photo" 
+                                            required fullWidth
+                                            label="Photo" 
+                                            name="photo" 
+                                            value={this.state.photo}
+                                            variant="standard" 
                                             InputLabelProps={{
                                                 shrink: true,
-                                            }}/>
+                                            }} 
+                                            onChange={this.handleChange} 
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField 
+                                            id="title" 
+                                            required fullWidth 
+                                            label="Title" 
+                                            name="title" 
+                                            value={this.state.title}
+                                            variant="standard" 
+                                            onChange={this.handleChange} 
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }} 
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField 
+                                            id="date"
+                                            required fullWidth
+                                            label="Date"
+                                            name="date"
+                                            value={this.state.date}
+                                            type="date"
+                                            onChange={this.handleChange}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} >
                                         <TextField 
-                                        className={classes.input} 
-                                        onChange={this.handleChange} 
-                                        multiline rows={10} 
-                                        autoComplete="description" 
-                                        name="discription" 
-                                        variant="standard" 
-                                        fullWidth 
-                                        id="description" 
-                                        label="Description" 
-                                        autoFocus />
+                                            id="description" 
+                                            required fullWidth 
+                                            label="Description" 
+                                            name="description" 
+                                            value={this.state.description}
+                                            variant="standard" 
+                                            onChange={this.handleChange} 
+                                            multiline rows={10} 
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
                                     </Grid>
                                 </Grid>
+                                </FormControl>
                                 </form>
                         </CardContent>
-                            <CardActions>
+                            {/* <CardActions>
                                 <Button size="small" onClick={() => this.props.handleUpdate()}>Update</Button>
-                            </CardActions>
+                            </CardActions> */}
                         </Card>
                 
                     </DialogContentText> 
                     </DialogContent>
                     <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
+                    <Button onClick={(e) => this.props.handleClose(e)} color="primary">
                         Close
                     </Button>
-                    <Button  color="primary" autoFocus>
+                    <Button  type="submit" onClick={() => this.handleUpdate()} color="primary" autoFocus>
                         Update
                     </Button>
                     </DialogActions>

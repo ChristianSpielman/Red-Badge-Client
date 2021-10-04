@@ -18,6 +18,7 @@ interface LogInProps extends WithStyles<typeof styles> {
 interface LogInState {
     email: string,
     password: string,
+    message: string,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -41,9 +42,6 @@ const styles = ({palette, spacing}: Theme) => createStyles({
       submit: {
         margin: spacing(3, 0, 0),
       },
-      typography: {
-        fontFamily: 'Comfortaa',
-      }
 });
 
 class LogIn extends React.Component<LogInProps, LogInState> {
@@ -52,6 +50,7 @@ class LogIn extends React.Component<LogInProps, LogInState> {
         this.state = {
             email: '',
             password: '',
+            message: '',
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -71,7 +70,11 @@ class LogIn extends React.Component<LogInProps, LogInState> {
         .then((res) => res.json())
         // .then((data) => console.log(data))
         .then((data) => this.props.updateToken(data.sessionToken, data.user.admin))
-        .catch(e => console.log(e))
+        //add error message (email or password incorrect)
+        .catch((e) => {
+            console.log(e)
+            this.setState({message: `Email or Password Incorrect` })
+        });
     };
 
     handleEmailChange = (event: any) => {
@@ -90,19 +93,19 @@ class LogIn extends React.Component<LogInProps, LogInState> {
             <div>
                 <CssBaseline />
                 <div className={classes.paper}>
-                    <Typography component="h1" variant="h5">Welcome to My Travel Blog</Typography>
+                    <Typography component="h1" variant="h5" color="primary">Welcome to My Travel Blog</Typography>
                     <br />
                     {/* <Avatar className={classes.avatar}>
                             <LockOutlinedIcon />
                     </Avatar> */}
-                    <Typography component="h1" variant="h5">Log In :</Typography>
+                    <Typography component="h1" variant="h5" color="primary">Log In :</Typography>
                     <form className={classes.form} onSubmit={this.handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} >
                                 <TextField className={classes.input} onChange={this.handleEmailChange} autoComplete="email" name="email" variant="standard" required fullWidth id="email" label="Email" autoFocus />
                             </Grid>
                             <Grid item xs={12} >
-                                <TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
+                                <TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" type="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
                             </Grid>
                         </Grid>
                         <Box >

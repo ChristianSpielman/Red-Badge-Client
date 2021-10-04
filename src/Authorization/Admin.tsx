@@ -10,7 +10,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+// import Paper from '@material-ui/core/Paper';
 import APIURL from '../helpers/enviroment';
 
 interface AdminProps extends WithStyles<typeof styles> {
@@ -20,6 +27,9 @@ interface AdminProps extends WithStyles<typeof styles> {
 
 interface AdminState {
     usersArray: any[],
+    editOpen: boolean,
+    email: string,
+    password: string,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -57,11 +67,23 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
         super(props)
         this.state = {
             usersArray: [],
+            editOpen: false,
+            email: '',
+            password: '',
         }
     }
 
     componentDidMount = () => {
         this.getData();
+    }
+
+    handleOpen = (event: any) => {
+        event.preventDefault();
+        this.setState({editOpen: true})
+    }
+
+    handleClose = () => {
+        this.setState({editOpen: false})
     }
 
     getData = () => {
@@ -80,41 +102,117 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
         .catch((err) => console.log(err));
     }
 
+    deleteUser = (id: number) => {
+		console.log(id);
+        fetch(`${APIURL}/users/delete/${id}`,{
+            method: 'DELETE',
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.props.token}`,
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+			console.log(data);
+			this.getData();
+        })
+        .catch(e => console.log(e))
+    };
+
+    editUser = (id: number) =>{
+        fetch(`${APIURL}/users/update/${id}`,{
+            method: 'PUT',
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.props.token}`,
+            }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+			console.log(data);
+			this.getData();
+        })
+        .catch(e => console.log(e))
+    }
+
+    handleChange = (event: any) => {
+        event.preventDefault();
+        const { name, value } = event.target;
+        this.setState(Object.assign(this.state, {[name]: value}));
+    };
+
+
     render() {
         const {classes} = this.props;
         return(
             <div>
-            <Container component="main">
-                <Button onClick={this.props.clearToken} color="primary">Logout</Button>
-                <CssBaseline />
-                <div className="divMain">
-                    <Typography component="h1" variant="h5">Admin Page</Typography>
-                    <TableContainer className={classes.tablecontainer}>
-                        <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>First Name</TableCell>
-                                    <TableCell align="right">Last Name</TableCell>
-                                    <TableCell align="right">Email</TableCell>
-                                    <TableCell align="right"></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {this.state.usersArray.map((row, i) => (
-                                    <TableRow key={i}>
-                                        
-                                        <TableCell >{row.firstName}</TableCell>
-                                        <TableCell >{row.lastName}</TableCell>
-                                        <TableCell >{row.email}</TableCell>
-                                        <TableCell ><Button>Delete</Button></TableCell>
+            <Button onClick={this.props.clearToken} variant="contained" color="primary">Logout</Button>
+                <Container className="wrapper" component="main">
+                    <CssBaseline />
+                    <div className="divMain">
+                        <Typography component="h1" variant="h3" color="primary">Admin Page</Typography>
+                        <br/>
+                        <TableContainer className={classes.tablecontainer}>
+                            <Table className={classes.table} stickyHeader aria-label="sticky table">{/*sticky header*/}
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell >First Name</TableCell>
+                                        <TableCell >Last Name</TableCell>
+                                        <TableCell >Email</TableCell>
+                                        <TableCell ></TableCell>
+                                        <TableCell ></TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </Container>
-            </div>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.usersArray.filter(row => !row.admin).map((row, i) => (
+                                        <TableRow key={i}>
+                                            
+                                            <TableCell >{row.firstName}</TableCell>
+                                            <TableCell >{row.lastName}</TableCell>
+                                            <TableCell >{row.email}</TableCell>
+                                            <TableCell ><Button variant="contained" color="primary" onClick={(e) => this.handleOpen(e)}>Edit</Button></TableCell>
+                                            <TableCell ><Button variant="contained" color="secondary" onClick={() => this.deleteUser(row.id)}>Delete</Button></TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+                </Container>
+                    <Dialog
+                    open={this.state.editOpen}
+                    onClose={this.handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title">{"Edit Vacation Details:"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+
+                            <Typography component="h1" variant="h5" color="primary">Log In :</Typography>
+                                <form className={classes.form}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={6}>
+                                            <TextField className={classes.input} onChange={this.handleChange} autoComplete="fname" name="firstName" variant="standard" required fullWidth id="firstName" label="First Name" autoFocus />
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <TextField className={classes.input} onChange={this.handleChange} autoComplete="lname" name="lastName" variant="standard" required fullWidth id="lastName" label="Last Name" autoFocus />
+                                        </Grid>
+                                        <Grid item xs={12} >
+                                            <TextField className={classes.input} onChange={this.handleChange} autoComplete="password" type="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
+                                        </Grid>
+                                    </Grid>
+                                </form>
+
+                            </DialogContentText> 
+                        </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">Close</Button>
+                        <Button  color="primary" autoFocus>Update</Button>
+                    </DialogActions>
+                </Dialog>
+                            
+                {/*modal grab inputs from register form*/}
+        </div>
         )
     }
 }

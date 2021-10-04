@@ -30,6 +30,7 @@ interface BlogEntryState {
     description: string,
     selectedDate: Date,
     blogArray: IBlogList[],
+    token: string,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -65,6 +66,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
             description: '',
             selectedDate: new Date(),
             blogArray: [],
+            token: this.props.token,
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -90,45 +92,26 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
     }
 
     handleDelete = (id: number) => {
-		console.log(id);
+        console.log(id);
         fetch(`${APIURL}/vacation/delete/${id}`,{
             method: 'DELETE',
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.props.token}`,
+                "Authorization": `Bearer ${this.state.token}`,
             }),
         })
         .then((res) => res.json())
         .then((data) => {
-			console.log(data);
-			this.getData();
+            console.log(data);
+            this.getData();
         })
         .catch(e => console.log(e))
     };
 
-    handleUpdate = () => {
-        fetch(`${APIURL}/vacation/update`,{
-            method: 'PUT',
-            body: JSON.stringify({
-                photo: this.state.photo,
-                title: this.state.title,
-                date: this.state.date,
-                description: this.state.description
-            }),
-            headers: new Headers({
-                "Content-Type": "application/json",
-                "Authorization": this.props.token,
-            }),
-        })
-        .then((res) => res.json())
-        .then(() => {
-            //
-        })
-        .catch(e => console.log(e))
-    };
+
 
     handleSubmit = (event: any) => {
-		console.log(this.state.date)
+        console.log(this.state.date)
         event.preventDefault();
         fetch(`${APIURL}/vacation/create`,{
             method: 'POST',
@@ -147,7 +130,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         .then((data) => {
             console.log('Response Data: ', data);
             event.target.reset();
-			this.getData();
+            this.getData();
         })
         .catch(e => console.log(e))
     };
@@ -162,15 +145,15 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         const {classes} = this.props;
         return(
             <div>
-				{/* <NavBar /> */}
+                {/* <NavBar /> */}
                 <Container component="main" maxWidth="sm">
                     <Button 
-					onClick={this.props.clearToken} 
-					style={{backgroundColor: "lightblue"}} 
-					className={classes.submit} 
-					type="submit" 
-					fullWidth variant='outlined' 
-					color="primary">Logout</Button>
+                    onClick={this.props.clearToken} 
+                    style={{backgroundColor: "lightblue"}} 
+                    className={classes.submit} 
+                    type="submit" 
+                    fullWidth variant='outlined' 
+                    color="primary">Logout</Button>
                     <CssBaseline />
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h5" color="primary">Create A Vacation Blog!</Typography>
@@ -183,66 +166,66 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                             <Grid container spacing={2}>
                             <Grid item xs={12} >
                                     <TextField 
-									className={classes.input} 
-									onChange={this.handleChange} 
-									autoComplete="photo" 
-									name="photo" 
-									variant="standard" 
-									required fullWidth 
-									id="photo" 
-									label="Photo" 
-									autoFocus />
+                                    className={classes.input} 
+                                    onChange={this.handleChange} 
+                                    autoComplete="photo" 
+                                    name="photo" 
+                                    variant="standard" 
+                                    required fullWidth 
+                                    id="photo" 
+                                    label="Photo" 
+                                    autoFocus />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField 
-									className={classes.input} 
-									onChange={this.handleChange} 
-									autoComplete="title" 
-									name="title" 
-									variant="standard" 
-									required fullWidth 
-									id="title" 
-									label="Title" 
-									autoFocus />
+                                    className={classes.input} 
+                                    onChange={this.handleChange} 
+                                    autoComplete="title" 
+                                    name="title" 
+                                    variant="standard" 
+                                    required fullWidth 
+                                    id="title" 
+                                    label="Title" 
+                                    autoFocus />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-									<TextField 
-										name="date"
-										id="date"
-										label="Date"
-										type="date"
-										onChange={this.handleChange}
-										// className={classes.textField}
-										fullWidth
-										InputLabelProps={{
-											shrink: true,
-										}}/>
+                                    <TextField 
+                                        name="date"
+                                        id="date"
+                                        label="Date"
+                                        type="date"
+                                        onChange={this.handleChange}
+                                        // className={classes.textField}
+                                        fullWidth
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}/>
                                 </Grid>
                                 <Grid item xs={12} >
                                     <TextField 
-									className={classes.input} 
-									onChange={this.handleChange} 
-									multiline rows={10} 
-									autoComplete="description" 
-									name="description" 
-									variant="standard" 
-									fullWidth 
-									id="description" 
-									label="Description" 
-									autoFocus />
+                                    className={classes.input} 
+                                    onChange={this.handleChange} 
+                                    multiline rows={10} 
+                                    autoComplete="description" 
+                                    name="description" 
+                                    variant="standard" 
+                                    fullWidth 
+                                    id="description" 
+                                    label="Description" 
+                                    autoFocus />
                                 </Grid>
                             </Grid>
                             <Button 
-							style={{backgroundColor: "lightblue"}} 
-							className={classes.submit} 
-							type="submit" 
-							fullWidth 
-							variant='outlined' 
-							color="primary">Post Blog</Button>
+                            style={{backgroundColor: "lightblue"}} 
+                            className={classes.submit} 
+                            type="submit" 
+                            fullWidth 
+                            variant='outlined' 
+                            color="primary">Post Blog</Button>
                         </form>
                     </div>
                 </Container>
-                <VacationList token={this.props.token} blogArray={this.state.blogArray} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate}/>
+                <VacationList token={this.props.token} blogArray={this.state.blogArray} handleDelete={this.handleDelete}/>
             </div>
         );
     }

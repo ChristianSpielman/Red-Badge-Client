@@ -104,12 +104,12 @@ class Register extends React.Component<RegisterProps, RegisterState> { //these a
             <div>
                 <CssBaseline />
                 <div className={classes.paper}>
-                    <Typography component="h1" variant="h5">Welcome to My Travel Blog</Typography>
+                    <Typography component="h1" variant="h5" color="primary">Welcome to My Travel Blog</Typography>
                     <br />
                     {/* <Avatar className={classes.avatar}>
                             <LockOutlinedIcon />
                     </Avatar> */}
-                    <Typography component="h1" variant="h5">Sign Up :</Typography>
+                    <Typography component="h1" variant="h5" color="primary">Sign Up :</Typography>
                     <form className={classes.form} onSubmit={this.handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
@@ -122,10 +122,10 @@ class Register extends React.Component<RegisterProps, RegisterState> { //these a
                                 <TextField className={classes.input} onChange={this.handleEmailChange} autoComplete="email" name="email" variant="standard" required fullWidth id="email" label="Email" autoFocus />
                             </Grid>
                             <Grid item xs={12} >
-                                <TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
+                                <TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" type="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
                             </Grid>
                         </Grid>
-                        <Button style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Register</Button>
+                        <Button style={{backgroundColor: "lightgray"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Register</Button>
                     </form>
                 </div>
             </div>

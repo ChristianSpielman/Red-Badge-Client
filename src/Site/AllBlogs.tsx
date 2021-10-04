@@ -77,7 +77,9 @@ class AllBlogs extends React.Component<AllBlogsProps, AllBlogsState> {
         const {classes} =  this.props;
         return(
             <div className="wrapper">
-                <h1>View all User Created Blogs</h1>
+                <Typography variant="h3" color="primary">View all User Created Blogs</Typography>
+                <hr/>
+                <br/>
 				<Grid container spacing={1}>
                 {this.state.blogArray.map((record, i) => (
 					<Grid item xs={3} key={i}>
