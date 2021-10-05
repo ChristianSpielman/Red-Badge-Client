@@ -1,3 +1,6 @@
+Welcome to my travel blog app! This website is designed to assist travelers create to do lists to plan their travel, post blogs about their past travel experiences, and view other user's blogs. This website is password protected agains unauthorized users. This is to protect you from non-members accessing your information. Within the Create A Blog page users can enter information about their past vacations such as a Photo, Title, Date, Description and save it as a post on their individual page. The Planning page lets users create and edit a check list of prerequisites to better plan their vacations. Please enjoy the website!
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

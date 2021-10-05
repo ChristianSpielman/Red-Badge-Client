@@ -15,20 +15,20 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import APIURL from '../helpers/enviroment';
 
-interface VacationEditModalProps extends WithStyles<typeof styles> {
-    blogData: any,
+interface PlanningModalProps extends WithStyles<typeof styles> {
+    planData: any,
     handleClose: any,
     editOpen: boolean,
     token: string,
 }
 
-interface VacationEditModalState {
+interface PlanningModalState {
     editOpen: boolean,
     id: number,
     photo: string,
     title: string,
     date: string,
-    description: string,
+    toDo: string,
     update: any,
 }
 
@@ -61,28 +61,28 @@ const styles = ({palette, spacing}: Theme) => createStyles({
     },
 });
 
-class VacationEditModal extends React.Component<VacationEditModalProps, VacationEditModalState> {
-    constructor(props: VacationEditModalProps){
+class PlanningModal extends React.Component<PlanningModalProps, PlanningModalState> {
+    constructor(props: PlanningModalProps){
         super(props)
         this.state = {
             editOpen: true,
-            id: props.blogData.id,
-            photo: props.blogData.photo,
-            title: props.blogData.title,
-            date: props.blogData.date,
-            description: props.blogData.description,
+            id: props.planData.id,
+            photo: props.planData.photo,
+            title: props.planData.title,
+            date: props.planData.date,
+            toDo: props.planData.toDo,
             update: {},
         }
     }
 
     handleUpdate = () => {
-        fetch(`${APIURL}/vacation/update/${this.state.id}`,{
+        fetch(`${APIURL}/planning/update/${this.state.id}`,{
             method: 'PUT',
             body: JSON.stringify({
                 photo: this.state.photo,
                 title: this.state.title,
                 date: this.state.date,
-                description: this.state.description
+                toDo: this.state.toDo
             }),
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -172,11 +172,11 @@ class VacationEditModal extends React.Component<VacationEditModalProps, Vacation
                                     </Grid>
                                     <Grid item xs={12} >
                                         <TextField 
-                                            id="description" 
+                                            id="toDo" 
                                             required fullWidth 
-                                            label="Description" 
-                                            name="description" 
-                                            value={this.state.description}
+                                            label="To Do" 
+                                            name="toDo" 
+                                            value={this.state.toDo}
                                             variant="standard" 
                                             onChange={this.handleChange} 
                                             multiline rows={10} 
@@ -210,4 +210,4 @@ class VacationEditModal extends React.Component<VacationEditModalProps, Vacation
         }
     }
 
-export default withStyles(styles)(VacationEditModal);
+export default withStyles(styles)(PlanningModal);

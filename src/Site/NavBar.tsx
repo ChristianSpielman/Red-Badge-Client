@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import BlogEntry from '../VacationBlog/BlogEntry';
 import AllBlogs from './AllBlogs';
+import Planning from '../Planning/Planning';
 
 interface NavBarProps {
 	clearToken: any,
@@ -57,6 +58,7 @@ render() {
 						<Typography variant="h6">Vacation Blog</Typography>
 							<Button color="primary"><Link to='/allBlogs'>View All</Link></Button>
 							<Button color="inherit"><Link to="/blogEntry">Create a Blog</Link></Button>
+							<Button color="inherit"><Link to="/planning">Plan Vacations</Link></Button>
 							<Button color="inherit" onClick={this.props.clearToken}><Link to=''>Logout</Link></Button>
 					</Toolbar>
 				</AppBar>
@@ -64,6 +66,7 @@ render() {
 				<Route exact path="/"><AllBlogs token={this.props.token}/></Route>
 				<Route exact path="/allBlogs"><AllBlogs token={this.props.token}/></Route>
 				<Route exact path="/blogEntry"><BlogEntry token={this.props.token} clearToken={this.props.clearToken} admin={this.props.admin} /></Route>
+				<Route exact path="/planning"><Planning token={this.props.token} clearToken={this.props.clearToken} admin={this.props.admin} /></Route>
 			</Switch>
 			</Router>
 		</div>

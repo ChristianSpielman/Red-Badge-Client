@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import VacationEditModal from './VacationEditModal';
+import Container from '@material-ui/core/Container';
 
 // import APIURL from '../helpers/enviroment';
 
@@ -15,6 +16,7 @@ interface VacationListProps extends WithStyles<typeof styles> {
     token: string;
     blogArray: any[],
     handleDelete: any,
+    getData: any,
 }
 
 interface BlogData {
@@ -38,7 +40,7 @@ const styles = ({palette, spacing}: Theme) => createStyles({
     },
     card: {
         margin: spacing(1),
-        maxWidth: 400,
+        maxWidth: 600,
     },
     bullet: {
         display: 'inline-block',
@@ -73,24 +75,26 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
     }
     handleClose = () => {
         this.setState({editOpen: false})
+        this.props.getData();
     }
 
     render() {
         const {classes} =  this.props; //this is neccassary 
         return(
             <div className="wrapper">
-                <br/>
-                <hr/>
                 <Typography component="h1" variant="h3" color="primary">Past Vacations:</Typography>
                 <br/>
+                <hr/>
+                <br/>
+                <Container fixed maxWidth="xl">
                 <Grid container spacing={1}>
                 {this.props.blogArray.map((record, i) => (
-                    <Grid item xs={3} key={i}>
+                    <Grid item xs={4} key={i}>
                         <Card className={classes.card} >
                             <CardContent>
                                 <CardMedia
                                     component='img'
-                                    height= "140"
+                                    height= "250"
                                     image= {record.photo}
                                 />
                                 <Typography variant="h5" component="h2" gutterBottom>
@@ -99,20 +103,20 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
                                 <Typography className={classes.pos} color="textSecondary">
                                     {record.date}
                                 </Typography>
-                                <Typography id="filled-multiline-static"
-                                    variant="body2" component="p">
+                                <Typography variant="body2" component="p">
                                     {record.description}
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
-                                <Button size="small" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
+                                <Button size="small" variant="contained" color="primary"onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
+                                <Button size="small" variant="contained" color="secondary" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
                             </CardActions>
                         </Card>
                     </Grid>
                 ))}
                 </Grid>
                 {this.state.editOpen ? <VacationEditModal token={this.props.token} blogData={this.state.blogData} handleClose={this.handleClose} editOpen={this.state.editOpen}/> : "" }
+                </Container>
             </div>
         );
     }

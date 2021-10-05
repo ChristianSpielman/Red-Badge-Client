@@ -178,7 +178,10 @@ class Admin extends React.Component<AdminProps, AdminState> { //these are the tw
                                             <TableCell ><Button variant="contained" color="primary" onClick={(e) => this.handleOpen(e)}>Edit</Button></TableCell>
                                             <TableCell ><Button variant="contained" color="secondary" onClick={() => this.deleteUser(row.id)}>Delete</Button></TableCell>
                                         </TableRow>
-                                    ))}
+                                    ))
+                                    //.sort here
+                                 
+                                    }
                                 </TableBody>
                             </Table>
                         </TableContainer>

@@ -7,10 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import APIURL from '../helpers/enviroment';
-import VacationList from '../VacationBlog/VacationList';
+import PlanningList from '../Planning/PlanningList';
 // import NavBar from '../Site/NavBar';
 
-interface BlogEntryProps extends WithStyles<typeof styles> {
+interface PlanningProps extends WithStyles<typeof styles> {
     clearToken: any;
     token: string;
     admin: boolean;
@@ -20,16 +20,16 @@ interface IBlogList {
     photo: string,
     title: string,
     date: string,
-    descrtiption: string,
+    toDo: string,
 }
 
-interface BlogEntryState {
+interface PlanningState {
     photo: string,
     title: string,
     date: string,
-    description: string,
+    toDo: string,
     selectedDate: Date,
-    blogArray: IBlogList[],
+    planArray: IBlogList[],
     token: string,
 }
 
@@ -56,16 +56,16 @@ const styles = ({palette, spacing}: Theme) => createStyles({
       },
 });
 
-class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //these are the two interface from above
-    constructor(props: BlogEntryProps){
+class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these are the two interface from above
+    constructor(props: PlanningProps){
         super(props)
         this.state = {
             photo: '',
             title: '',
             date: '',
-            description: '',
+            toDo: '',
             selectedDate: new Date(),
-            blogArray: [],
+            planArray: [],
             token: this.props.token,
         }
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -76,7 +76,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
     }
 
     getData = () => {
-        fetch(`${APIURL}/vacation/getAllBlogsByUser`,{
+        fetch(`${APIURL}/planning/getAllPlansByUser`,{
             method: 'GET',
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -86,14 +86,14 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         .then((res) => res.json())
         .then((data) => {
             // console.log('Data: ', data);
-            this.setState({blogArray: data})
+            this.setState({planArray: data})
         })
         .catch((err) => console.log(err));
     }
 
     handleDelete = (id: number) => {
         console.log(id);
-        fetch(`${APIURL}/vacation/delete/${id}`,{
+        fetch(`${APIURL}/planning/delete/${id}`,{
             method: 'DELETE',
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -113,13 +113,13 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
     handleSubmit = (event: any) => {
         console.log(this.state.date)
         event.preventDefault();
-        fetch(`${APIURL}/vacation/create`,{
+        fetch(`${APIURL}/planning/create`,{
             method: 'POST',
             body: JSON.stringify({
                 photo: this.state.photo,
                 title: this.state.title,
                 date: this.state.date,
-                description: this.state.description
+                toDo: this.state.toDo
             }),
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -149,7 +149,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                 <Container component="main" maxWidth="sm">
                     <CssBaseline />
                     <div className={classes.paper}>
-                        <Typography component="h1" variant="h3" color="primary">Create A Vacation Blog!</Typography>
+                        <Typography component="h1" variant="h3" color="primary">Plan Your Next Vacation!</Typography>
                         <br />
                         {/* <Avatar className={classes.avatar}>
                                 <LockOutlinedIcon />
@@ -199,12 +199,12 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                                     className={classes.input} 
                                     onChange={this.handleChange} 
                                     multiline rows={10} 
-                                    autoComplete="description" 
-                                    name="description" 
+                                    autoComplete="toDO" 
+                                    name="toDo" 
                                     variant="standard" 
                                     fullWidth 
-                                    id="description" 
-                                    label="Description" 
+                                    id="toDO" 
+                                    label="To Do" 
                                     autoFocus />
                                 </Grid>
                             </Grid>
@@ -214,11 +214,11 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                             type="submit" 
                             fullWidth 
                             variant='outlined' 
-                            color="primary">Post Blog</Button>
+                            color="primary">Post Plan</Button>
                         </form>
                     </div>
                 </Container>
-                <VacationList getData={this.getData} token={this.props.token} blogArray={this.state.blogArray} handleDelete={this.handleDelete}/>
+                <PlanningList getData={this.getData} token={this.props.token} planArray={this.state.planArray} handleDelete={this.handleDelete}/>
             </div>
         );
     }

@@ -1,25 +1,36 @@
 import React from 'react';
-import APIURL from '../helpers/enviroment';
+import {withStyles, createStyles, WithStyles, Theme} from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
-import Container from '@material-ui/core/Container';
+import PlanningModal from './PlanningModal';
 
-import {withStyles, createStyles, WithStyles, Theme} from '@material-ui/core/styles';
+// import APIURL from '../helpers/enviroment';
 
-
-
-interface AllBlogsProps extends WithStyles<typeof styles> {
-    token: string,
-    blogArray?: any[],
+interface PlanningListProps extends WithStyles<typeof styles> {
+    token: string;
+    planArray: any[],
+    handleDelete: any,
+    getData: any,
 }
 
-interface AllBlogsState {
-    blogArray: any[],
+interface PlanningData {
+    id: number,
+    photo: string,
+    title: string,
+    date: string,
+    toDo: string,
 }
+
+interface PlanningListState {
+    planData: {},
+    editOpen: boolean,
+}
+
 
 const styles = ({palette, spacing}: Theme) => createStyles({
     media: {
@@ -27,8 +38,8 @@ const styles = ({palette, spacing}: Theme) => createStyles({
         marginTop:'30',
     },
     card: {
-		margin: spacing(1),
-		maxWidth: 600,
+        margin: spacing(1),
+        maxWidth: 400,
     },
     bullet: {
         display: 'inline-block',
@@ -43,53 +54,42 @@ const styles = ({palette, spacing}: Theme) => createStyles({
     },
 });
 
-
-class AllBlogs extends React.Component<AllBlogsProps, AllBlogsState> {
-    constructor(props:AllBlogsProps){
+class PlanningList extends React.Component<PlanningListProps, PlanningListState> { //these are the two interface from above
+    constructor(props:PlanningListProps){
         super(props)
         this.state = {
-            blogArray: [],
-
+            planData: [],
+            editOpen: false,
         }
     }
 
     componentDidMount = () => {
-        this.getData();
-    }
-    
-    getData = () => {
-        fetch(`${APIURL}/vacation/getAllBlogs`,{
-            method: 'GET',
-            headers: new Headers({
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${this.props.token}`,
-            }),
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            // console.log('Data: ', data);
-            this.setState({blogArray: data})
-        })
-        .catch((err) => console.log(err));
     }
 
-    
+    handleOpen = (event: any, record: any) => {
+        event.preventDefault();
+        // this.setState({blogData: record})
+        this.setState({planData: record});
+        this.setState({editOpen: true})
+    }
+    handleClose = () => {
+        this.setState({editOpen: false})
+        this.props.getData();
+    }
+
     render() {
-        const {classes} =  this.props;
+        const {classes} =  this.props; //this is neccassary 
         return(
             <div className="wrapper">
-                <Typography variant="h3" color="primary">View all User Created Blogs</Typography>
-                <hr/>
-                <br/>
-                <Container fixed maxWidth="xl">
+                <h1 className="text-center">Future Vacation Plans:</h1>
                     <Grid container spacing={1}>
-                    {this.state.blogArray.map((record, i) => (
-                        <Grid item xs={4} key={i}>
+                    {this.props.planArray.map((record, i) => (
+                        <Grid item xs={3} key={i}>
                             <Card className={classes.card} >
                                 <CardContent>
                                     <CardMedia
                                         component='img'
-                                        height= "250"
+                                        height= "140"
                                         image= {record.photo}
                                     />
                                     <Typography variant="h5" component="h2" gutterBottom>
@@ -99,21 +99,21 @@ class AllBlogs extends React.Component<AllBlogsProps, AllBlogsState> {
                                         {record.date}
                                     </Typography>
                                     <Typography variant="body2" component="p">
-                                        {record.description}
+                                        {record.toDo}
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    {/* <Button size="small" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
-                                    <Button size="small" onClick={() => this.props.handleDelete(record.id)}>Delete</Button> */}
+                                    <Button size="small" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
+                                    <Button size="small" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
                                 </CardActions>
                             </Card>
                         </Grid>
                     ))}
-                    </Grid>  
-                </Container>;
+                    </Grid>
+                    {this.state.editOpen ? <PlanningModal token={this.props.token} planData={this.state.planData} handleClose={this.handleClose} editOpen={this.state.editOpen}/> : "" }
             </div>
-        )
+        );
     }
 }
 
-export default withStyles(styles)(AllBlogs);
+export default withStyles(styles)(PlanningList)
