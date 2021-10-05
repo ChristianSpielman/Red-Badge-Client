@@ -154,7 +154,6 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
                         {/* <Avatar className={classes.avatar}>
                                 <LockOutlinedIcon />
                         </Avatar> */}
-                        <Typography component="h1" variant="h4" color="primary">Vacation Details :</Typography>
                         <form className={classes.form} onSubmit={this.handleSubmit}>
                             <Grid container spacing={2}>
                             <Grid item xs={12} >

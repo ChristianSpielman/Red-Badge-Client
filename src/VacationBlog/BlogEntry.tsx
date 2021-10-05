@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import APIURL from '../helpers/enviroment';
 import VacationList from '../VacationBlog/VacationList';
+import Alert from '@material-ui/lab/Alert';
 // import NavBar from '../Site/NavBar';
 
 interface BlogEntryProps extends WithStyles<typeof styles> {
@@ -31,6 +32,7 @@ interface BlogEntryState {
     selectedDate: Date,
     blogArray: IBlogList[],
     token: string,
+    message: string,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -67,6 +69,7 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
             selectedDate: new Date(),
             blogArray: [],
             token: this.props.token,
+            message: '',
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -131,8 +134,13 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
             console.log('Response Data: ', data);
             event.target.reset();
             this.getData();
+            this.setState({message: `Successfully Created Vacation`})
+            setTimeout(() => this.setState({message: ``}), 3000)
         })
-        .catch(e => console.log(e))
+        .catch((e) => {
+            console.log(e)
+
+        })
     };
 
     handleChange = (event: any) => {
@@ -154,7 +162,8 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
                         {/* <Avatar className={classes.avatar}>
                                 <LockOutlinedIcon />
                         </Avatar> */}
-                        <Typography component="h1" variant="h4" color="primary">Vacation Details :</Typography>
+                        {this.state.message ? <Alert severity="success">{this.state.message}</Alert> : ''}
+                        {/* <Typography component="h1" variant="h4" color="primary">Vacation Details:</Typography> */}
                         <form className={classes.form} onSubmit={this.handleSubmit}>
                             <Grid container spacing={2}>
                             <Grid item xs={12} >
