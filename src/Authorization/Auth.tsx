@@ -4,6 +4,7 @@ import LogIn from "./LogIn";
 import Register from "./Register";
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box'
 
 
 interface AuthProps extends WithStyles<typeof styles> {
@@ -40,19 +41,18 @@ class Auth extends React.Component<AuthProps, AuthState> {
         } else {
             this.setState({buttonLabel: "Register"});
         };
-        // this.state.loginToggle ? this.setState({buttonLabel: "Log In"}) : this.setState({buttonLabel: "Register"})
     };
 
     render() {
         const {classes} = this.props;
         return(
             <Container component="main" maxWidth="sm">
-                {this.state.loginToggle ? <Register updateToken={this.props.updateToken} clearToken={this.props.clearToken}/> : <LogIn updateToken={this.props.updateToken} clearToken={this.props.clearToken}/>}
-                <Button style={{backgroundColor: "lightblue"}} onClick={this.toggle} className={classes.submit} fullWidth type="submit" variant='outlined' color="primary">{this.state.buttonLabel}</Button>
-
+                <Box textAlign='center'>
+                    {this.state.loginToggle ? <Register updateToken={this.props.updateToken} clearToken={this.props.clearToken}/> : <LogIn updateToken={this.props.updateToken} clearToken={this.props.clearToken}/>}
+                    <Button onClick={this.toggle} className={classes.submit}  type="submit" variant='contained' color="primary">{this.state.buttonLabel}</Button>
+                </Box>
             </Container>
         );
     }
 }
 export default withStyles(styles)(Auth)
-// export default Auth;

@@ -10,8 +10,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import VacationEditModal from './VacationEditModal';
 import Container from '@material-ui/core/Container';
 
-// import APIURL from '../helpers/enviroment';
-
 interface VacationListProps extends WithStyles<typeof styles> {
     token: string;
     blogArray: any[],
@@ -35,7 +33,7 @@ interface VacationListState {
 
 const styles = ({palette, spacing}: Theme) => createStyles({
     media: {
-        paddingTop: '56.25%', // 16:9,
+        paddingTop: '56.25%',
         marginTop:'30',
     },
     card: {
@@ -55,7 +53,7 @@ const styles = ({palette, spacing}: Theme) => createStyles({
     },
 });
 
-class VacationList extends React.Component<VacationListProps, VacationListState> { //these are the two interface from above
+class VacationList extends React.Component<VacationListProps, VacationListState> {
     constructor(props:VacationListProps){
         super(props)
         this.state = {
@@ -69,7 +67,6 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
 
     handleOpen = (event: any, record: any) => {
         event.preventDefault();
-        // this.setState({blogData: record})
         this.setState({blogData: record});
         this.setState({editOpen: true})
     }
@@ -79,7 +76,7 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
     }
 
     render() {
-        const {classes} =  this.props; //this is neccassary 
+        const {classes} =  this.props;
         return(
             <div className="wrapper">
                 <Typography component="h1" variant="h3" color="primary">Past Vacations:</Typography>
@@ -87,35 +84,35 @@ class VacationList extends React.Component<VacationListProps, VacationListState>
                 <hr/>
                 <br/>
                 <Container fixed maxWidth="xl">
-                <Grid container spacing={1}>
-                {this.props.blogArray.map((record, i) => (
-                    <Grid item xs={4} key={i}>
-                        <Card className={classes.card} >
-                            <CardContent>
-                                <CardMedia
-                                    component='img'
-                                    height= "250"
-                                    image= {record.photo}
-                                />
-                                <Typography variant="h5" component="h2" gutterBottom>
-                                    {record.title}
-                                </Typography>
-                                <Typography className={classes.pos} color="textSecondary">
-                                    {record.date}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    {record.description}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" variant="contained" color="primary"onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
-                                <Button size="small" variant="contained" color="secondary" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
-                            </CardActions>
-                        </Card>
+                    <Grid container spacing={1}>
+                        {this.props.blogArray.map((record, i) => (
+                            <Grid item xs={4} key={i}>
+                                <Card className={classes.card} >
+                                    <CardContent>
+                                        <CardMedia
+                                            component='img'
+                                            height= "250"
+                                            image= {record.photo}
+                                        />
+                                        <Typography variant="h5" component="h2" gutterBottom>
+                                            {record.title}
+                                        </Typography>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            {record.date}
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {record.description}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small" variant="contained" color="primary" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
+                                        <Button size="small" variant="contained" color="secondary" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))}
                     </Grid>
-                ))}
-                </Grid>
-                {this.state.editOpen ? <VacationEditModal token={this.props.token} blogData={this.state.blogData} handleClose={this.handleClose} editOpen={this.state.editOpen}/> : "" }
+                        {this.state.editOpen ? <VacationEditModal token={this.props.token} blogData={this.state.blogData} handleClose={this.handleClose} editOpen={this.state.editOpen}/> : "" }
                 </Container>
             </div>
         );

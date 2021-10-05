@@ -8,8 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import PlanningModal from './PlanningModal';
-
-// import APIURL from '../helpers/enviroment';
+import Container from '@material-ui/core/Container'
 
 interface PlanningListProps extends WithStyles<typeof styles> {
     token: string;
@@ -34,12 +33,12 @@ interface PlanningListState {
 
 const styles = ({palette, spacing}: Theme) => createStyles({
     media: {
-        paddingTop: '56.25%', // 16:9,
+        paddingTop: '56.25%',
         marginTop:'30',
     },
     card: {
         margin: spacing(1),
-        maxWidth: 400,
+        maxWidth: 600,
     },
     bullet: {
         display: 'inline-block',
@@ -54,7 +53,7 @@ const styles = ({palette, spacing}: Theme) => createStyles({
     },
 });
 
-class PlanningList extends React.Component<PlanningListProps, PlanningListState> { //these are the two interface from above
+class PlanningList extends React.Component<PlanningListProps, PlanningListState> {
     constructor(props:PlanningListProps){
         super(props)
         this.state = {
@@ -68,7 +67,6 @@ class PlanningList extends React.Component<PlanningListProps, PlanningListState>
 
     handleOpen = (event: any, record: any) => {
         event.preventDefault();
-        // this.setState({blogData: record})
         this.setState({planData: record});
         this.setState({editOpen: true})
     }
@@ -78,18 +76,22 @@ class PlanningList extends React.Component<PlanningListProps, PlanningListState>
     }
 
     render() {
-        const {classes} =  this.props; //this is neccassary 
+        const {classes} =  this.props;
         return(
             <div className="wrapper">
-                <h1 className="text-center">Future Vacation Plans:</h1>
+                <Typography component="h1" variant="h3" color="primary">Future Vacation Plans:</Typography>
+                <br/>
+                <hr/>
+                <br/>
+                <Container fixed maxWidth="xl">
                     <Grid container spacing={1}>
                     {this.props.planArray.map((record, i) => (
-                        <Grid item xs={3} key={i}>
+                        <Grid item xs={4} key={i}>
                             <Card className={classes.card} >
                                 <CardContent>
                                     <CardMedia
                                         component='img'
-                                        height= "140"
+                                        height= "250"
                                         image= {record.photo}
                                     />
                                     <Typography variant="h5" component="h2" gutterBottom>
@@ -103,13 +105,14 @@ class PlanningList extends React.Component<PlanningListProps, PlanningListState>
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    <Button size="small" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
-                                    <Button size="small" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
+                                    <Button size="small" variant="contained" color="primary" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
+                                    <Button size="small" variant="contained" color="secondary" onClick={() => this.props.handleDelete(record.id)}>Delete</Button>
                                 </CardActions>
                             </Card>
                         </Grid>
                     ))}
                     </Grid>
+                </Container>
                     {this.state.editOpen ? <PlanningModal token={this.props.token} planData={this.state.planData} handleClose={this.handleClose} editOpen={this.state.editOpen}/> : "" }
             </div>
         );

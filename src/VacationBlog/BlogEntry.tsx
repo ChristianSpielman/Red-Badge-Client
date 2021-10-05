@@ -9,7 +9,7 @@ import Container from '@material-ui/core/Container';
 import APIURL from '../helpers/enviroment';
 import VacationList from '../VacationBlog/VacationList';
 import Alert from '@material-ui/lab/Alert';
-// import NavBar from '../Site/NavBar';
+import Box from '@material-ui/core/Box';
 
 interface BlogEntryProps extends WithStyles<typeof styles> {
     clearToken: any;
@@ -58,7 +58,7 @@ const styles = ({palette, spacing}: Theme) => createStyles({
       },
 });
 
-class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //these are the two interface from above
+class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> {
     constructor(props: BlogEntryProps){
         super(props)
         this.state = {
@@ -88,14 +88,12 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         })
         .then((res) => res.json())
         .then((data) => {
-            // console.log('Data: ', data);
             this.setState({blogArray: data})
         })
         .catch((err) => console.log(err));
     }
 
     handleDelete = (id: number) => {
-        console.log(id);
         fetch(`${APIURL}/vacation/delete/${id}`,{
             method: 'DELETE',
             headers: new Headers({
@@ -105,7 +103,6 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
             this.getData();
         })
         .catch(e => console.log(e))
@@ -114,7 +111,6 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
 
 
     handleSubmit = (event: any) => {
-        console.log(this.state.date)
         event.preventDefault();
         fetch(`${APIURL}/vacation/create`,{
             method: 'POST',
@@ -131,14 +127,12 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log('Response Data: ', data);
             event.target.reset();
             this.getData();
             this.setState({message: `Successfully Created Vacation`})
             setTimeout(() => this.setState({message: ``}), 3000)
         })
         .catch((e) => {
-            console.log(e)
 
         })
     };
@@ -153,77 +147,72 @@ class BlogEntry extends React.Component<BlogEntryProps, BlogEntryState> { //thes
         const {classes} = this.props;
         return(
             <div className="wrapper">
-                {/* <NavBar /> */}
                 <Container component="main" maxWidth="sm">
                     <CssBaseline />
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h3" color="primary">Create A Vacation Blog!</Typography>
                         <br />
-                        {/* <Avatar className={classes.avatar}>
-                                <LockOutlinedIcon />
-                        </Avatar> */}
                         {this.state.message ? <Alert severity="success">{this.state.message}</Alert> : ''}
-                        {/* <Typography component="h1" variant="h4" color="primary">Vacation Details:</Typography> */}
                         <form className={classes.form} onSubmit={this.handleSubmit}>
                             <Grid container spacing={2}>
-                            <Grid item xs={12} >
-                                    <TextField 
-                                    className={classes.input} 
-                                    onChange={this.handleChange} 
-                                    autoComplete="photo" 
-                                    name="photo" 
-                                    variant="standard" 
-                                    required fullWidth 
-                                    id="photo" 
-                                    label="Photo" 
-                                    autoFocus />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField 
-                                    className={classes.input} 
-                                    onChange={this.handleChange} 
-                                    autoComplete="title" 
-                                    name="title" 
-                                    variant="standard" 
-                                    required fullWidth 
-                                    id="title" 
-                                    label="Title" 
-                                    autoFocus />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField 
-                                        name="date"
-                                        id="date"
-                                        label="Date"
-                                        type="date"
-                                        onChange={this.handleChange}
-                                        // className={classes.textField}
-                                        fullWidth
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}/>
-                                </Grid>
                                 <Grid item xs={12} >
-                                    <TextField 
-                                    className={classes.input} 
-                                    onChange={this.handleChange} 
-                                    multiline rows={10} 
-                                    autoComplete="description" 
-                                    name="description" 
-                                    variant="standard" 
-                                    fullWidth 
-                                    id="description" 
-                                    label="Description" 
-                                    autoFocus />
+                                        <TextField 
+                                        className={classes.input} 
+                                        onChange={this.handleChange} 
+                                        autoComplete="photo" 
+                                        name="photo" 
+                                        variant="standard" 
+                                        required fullWidth 
+                                        id="photo" 
+                                        label="Photo" 
+                                        autoFocus />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField 
+                                        className={classes.input} 
+                                        onChange={this.handleChange} 
+                                        autoComplete="title" 
+                                        name="title" 
+                                        variant="standard" 
+                                        required fullWidth 
+                                        id="title" 
+                                        label="Title" 
+                                        autoFocus />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField 
+                                            name="date"
+                                            id="date"
+                                            label="Date"
+                                            type="date"
+                                            onChange={this.handleChange}
+                                            // className={classes.textField}
+                                            fullWidth
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}/>
+                                    </Grid>
+                                    <Grid item xs={12} >
+                                        <TextField 
+                                        className={classes.input} 
+                                        onChange={this.handleChange} 
+                                        multiline rows={10} 
+                                        autoComplete="description" 
+                                        name="description" 
+                                        variant="standard" 
+                                        fullWidth 
+                                        id="description" 
+                                        label="Description" 
+                                        autoFocus />
+                                    </Grid>
                                 </Grid>
-                            </Grid>
+                            <Box textAlign='center'>
                             <Button 
-                            style={{backgroundColor: "lightblue"}} 
-                            className={classes.submit} 
-                            type="submit" 
-                            fullWidth 
-                            variant='outlined' 
-                            color="primary">Post Blog</Button>
+                                className={classes.submit} 
+                                type="submit"  
+                                variant='contained' 
+                                color="primary">Post Blog</Button>
+                            </Box>
                         </form>
                     </div>
                 </Container>

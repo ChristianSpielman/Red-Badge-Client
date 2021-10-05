@@ -6,8 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import BlogEntry from '../VacationBlog/BlogEntry';
 import AllBlogs from './AllBlogs';
 import Planning from '../Planning/Planning';
@@ -16,12 +14,10 @@ interface NavBarProps {
 	clearToken: any,
 	token: string,
 	admin: boolean,
-	// blogArray: any[],
-	// classes: any,
 }
 
 interface NavBarState {
-	//
+	
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,8 +43,6 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
         }
     }
 
-
-
 render() {
 	return (
 		<div>
@@ -56,7 +50,7 @@ render() {
 				<AppBar position="fixed">
 					<Toolbar>
 						<Typography variant="h6">Vacation Blog</Typography>
-							<Button color="primary"><Link to='/allBlogs'>View All</Link></Button>
+							<Button ><Link to='/allBlogs'>View All</Link></Button>
 							<Button color="inherit"><Link to="/blogEntry">Create a Blog</Link></Button>
 							<Button color="inherit"><Link to="/planning">Plan Vacations</Link></Button>
 							<Button color="inherit" onClick={this.props.clearToken}><Link to=''>Logout</Link></Button>

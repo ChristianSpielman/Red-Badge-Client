@@ -8,7 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import APIURL from '../helpers/enviroment';
 import PlanningList from '../Planning/PlanningList';
-// import NavBar from '../Site/NavBar';
+import Box from '@material-ui/core/Box';
+import Alert from '@material-ui/lab/Alert';
 
 interface PlanningProps extends WithStyles<typeof styles> {
     clearToken: any;
@@ -31,6 +32,7 @@ interface PlanningState {
     selectedDate: Date,
     planArray: IBlogList[],
     token: string,
+    message: string,
 }
 
 const styles = ({palette, spacing}: Theme) => createStyles({
@@ -67,6 +69,7 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
             selectedDate: new Date(),
             planArray: [],
             token: this.props.token,
+            message: '',
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -85,14 +88,12 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
         })
         .then((res) => res.json())
         .then((data) => {
-            // console.log('Data: ', data);
             this.setState({planArray: data})
         })
         .catch((err) => console.log(err));
     }
 
     handleDelete = (id: number) => {
-        console.log(id);
         fetch(`${APIURL}/planning/delete/${id}`,{
             method: 'DELETE',
             headers: new Headers({
@@ -102,16 +103,12 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
             this.getData();
         })
         .catch(e => console.log(e))
     };
 
-
-
     handleSubmit = (event: any) => {
-        console.log(this.state.date)
         event.preventDefault();
         fetch(`${APIURL}/planning/create`,{
             method: 'POST',
@@ -128,9 +125,10 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log('Response Data: ', data);
             event.target.reset();
             this.getData();
+            this.setState({message: `Successfully Created A Plan`})
+            setTimeout(() => this.setState({message: ``}), 3000)
         })
         .catch(e => console.log(e))
     };
@@ -145,15 +143,12 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
         const {classes} = this.props;
         return(
             <div className="wrapper">
-                {/* <NavBar /> */}
                 <Container component="main" maxWidth="sm">
                     <CssBaseline />
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h3" color="primary">Plan Your Next Vacation!</Typography>
                         <br />
-                        {/* <Avatar className={classes.avatar}>
-                                <LockOutlinedIcon />
-                        </Avatar> */}
+                        {this.state.message ? <Alert severity="success">{this.state.message}</Alert> : ''}
                         <form className={classes.form} onSubmit={this.handleSubmit}>
                             <Grid container spacing={2}>
                             <Grid item xs={12} >
@@ -187,7 +182,6 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
                                         label="Date"
                                         type="date"
                                         onChange={this.handleChange}
-                                        // className={classes.textField}
                                         fullWidth
                                         InputLabelProps={{
                                             shrink: true,
@@ -207,13 +201,14 @@ class BlogEntry extends React.Component<PlanningProps, PlanningState> { //these 
                                     autoFocus />
                                 </Grid>
                             </Grid>
-                            <Button 
-                            style={{backgroundColor: "lightblue"}} 
-                            className={classes.submit} 
-                            type="submit" 
-                            fullWidth 
-                            variant='outlined' 
-                            color="primary">Post Plan</Button>
+                            <Box textAlign='center'>
+                                <Button 
+                                    className={classes.submit} 
+                                    type="submit"  
+                                    variant='contained' 
+                                    color="primary">Post Plan
+                                </Button>
+                            </Box>
                         </form>
                     </div>
                 </Container>

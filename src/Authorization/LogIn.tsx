@@ -7,8 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import APIURL from '../helpers/enviroment';
 import Box from '@material-ui/core/Box'
-// import APIURL from '../helpers/enviroment';
-
 
 interface LogInProps extends WithStyles<typeof styles> {
     updateToken: any;
@@ -42,6 +40,9 @@ const styles = ({palette, spacing}: Theme) => createStyles({
       submit: {
         margin: spacing(3, 0, 0),
       },
+      root:{
+          justifyContent: 'center'
+      },
 });
 
 class LogIn extends React.Component<LogInProps, LogInState> {
@@ -68,11 +69,8 @@ class LogIn extends React.Component<LogInProps, LogInState> {
             }),
         })
         .then((res) => res.json())
-        // .then((data) => console.log(data))
         .then((data) => this.props.updateToken(data.sessionToken, data.user.admin))
-        //add error message (email or password incorrect)
         .catch((e) => {
-            console.log(e)
             this.setState({message: `Email or Password Incorrect` })
         });
     };
@@ -93,23 +91,20 @@ class LogIn extends React.Component<LogInProps, LogInState> {
             <div>
                 <CssBaseline />
                 <div className={classes.paper}>
-                    <Typography component="h1" variant="h5" color="primary">Welcome to My Travel Blog</Typography>
+                    <Typography component="h1" variant="h3" color="primary">My Travel Blog</Typography>
                     <br />
-                    {/* <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon />
-                    </Avatar> */}
-                    <Typography component="h1" variant="h5" color="primary">Log In :</Typography>
+                    <Typography component="h1" variant="h4" color="primary">Log In :</Typography>
                     <form className={classes.form} onSubmit={this.handleSubmit}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} >
+                            <Grid item xs={6} >
                                 <TextField className={classes.input} onChange={this.handleEmailChange} autoComplete="email" name="email" variant="standard" required fullWidth id="email" label="Email" autoFocus />
                             </Grid>
-                            <Grid item xs={12} >
+                            <Grid item xs={6} >
                                 <TextField className={classes.input} onChange={this.handlePasswordChange} autoComplete="password" type="password" name="password" variant="standard" required fullWidth id="password" label="Password" autoFocus />
                             </Grid>
                         </Grid>
-                        <Box >
-                        <Button size="small" style={{backgroundColor: "lightblue"}} className={classes.submit} type="submit" fullWidth variant='outlined' color="primary">Log In</Button>
+                        <Box textAlign='center'>
+                            <Button  className={classes.submit} type="submit"  variant='contained' color="primary">Log In</Button>
                         </Box>
                     </form>
                 </div>

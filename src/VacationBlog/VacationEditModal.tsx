@@ -7,7 +7,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -34,7 +33,7 @@ interface VacationEditModalState {
 
 const styles = ({palette, spacing}: Theme) => createStyles({
     media: {
-        paddingTop: '56.25%', // 16:9,
+        paddingTop: '56.25%',
         marginTop:'30',
     },
     card: {
@@ -92,7 +91,6 @@ class VacationEditModal extends React.Component<VacationEditModalProps, Vacation
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
             this.props.handleClose();
         })
         .catch(e => console.log(e))
@@ -112,102 +110,96 @@ class VacationEditModal extends React.Component<VacationEditModalProps, Vacation
                     open={this.props.editOpen}
                     onClose={this.props.handleClose}
                     aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
+                    aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">{"Edit Vacation Details:"}</DialogTitle>
-                    <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        
-                    <Card className={classes.card} >
-                        <CardContent>
-                            <CardMedia
-                                component='img'
-                                height= "140"
-                                image= {this.state.photo}
-                            />
-                            <form className={classes.form} onSubmit={this.handleUpdate}>
-                                <FormControl>
-                                <Grid container>
-                                    <Grid item xs={12} >
-                                        <TextField 
-                                            id="photo" 
-                                            required fullWidth
-                                            label="Photo" 
-                                            name="photo" 
-                                            value={this.state.photo}
-                                            variant="standard" 
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }} 
-                                            onChange={this.handleChange} 
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                <Card className={classes.card} >
+                                    <CardContent>
+                                        <CardMedia
+                                            component='img'
+                                            height= "140"
+                                            image= {this.state.photo}
                                         />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField 
-                                            id="title" 
-                                            required fullWidth 
-                                            label="Title" 
-                                            name="title" 
-                                            value={this.state.title}
-                                            variant="standard" 
-                                            onChange={this.handleChange} 
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }} 
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField 
-                                            id="date"
-                                            required fullWidth
-                                            label="Date"
-                                            name="date"
-                                            value={this.state.date}
-                                            type="date"
-                                            onChange={this.handleChange}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} >
-                                        <TextField 
-                                            id="description" 
-                                            required fullWidth 
-                                            label="Description" 
-                                            name="description" 
-                                            value={this.state.description}
-                                            variant="standard" 
-                                            onChange={this.handleChange} 
-                                            multiline rows={10} 
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                </FormControl>
-                                </form>
-                        </CardContent>
-                            {/* <CardActions>
-                                <Button size="small" onClick={() => this.props.handleUpdate()}>Update</Button>
-                            </CardActions> */}
-                        </Card>
-                
-                    </DialogContentText> 
-                    </DialogContent>
+                                        <form className={classes.form} onSubmit={this.handleUpdate}>
+                                            <FormControl>
+                                            <Grid container>
+                                                <Grid item xs={12} >
+                                                    <TextField 
+                                                        id="photo" 
+                                                        required fullWidth
+                                                        label="Photo" 
+                                                        name="photo" 
+                                                        value={this.state.photo}
+                                                        variant="standard" 
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }} 
+                                                        onChange={this.handleChange} 
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6}>
+                                                    <TextField 
+                                                        id="title" 
+                                                        required fullWidth 
+                                                        label="Title" 
+                                                        name="title" 
+                                                        value={this.state.title}
+                                                        variant="standard" 
+                                                        onChange={this.handleChange} 
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }} 
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6}>
+                                                    <TextField 
+                                                        id="date"
+                                                        required fullWidth
+                                                        label="Date"
+                                                        name="date"
+                                                        value={this.state.date}
+                                                        type="date"
+                                                        onChange={this.handleChange}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} >
+                                                    <TextField 
+                                                        id="description" 
+                                                        required fullWidth 
+                                                        label="Description" 
+                                                        name="description" 
+                                                        value={this.state.description}
+                                                        variant="standard" 
+                                                        onChange={this.handleChange} 
+                                                        multiline rows={10} 
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                            </FormControl>
+                                            </form>
+                                    </CardContent>
+                                </Card>
+                            </DialogContentText> 
+                        </DialogContent>
                     <DialogActions>
-                    <Button onClick={(e) => this.props.handleClose(e)} color="primary">
-                        Close
-                    </Button>
-                    <Button  type="submit" onClick={() => this.handleUpdate()} color="primary" autoFocus>
-                        Update
-                    </Button>
+                        <Button onClick={(e) => this.props.handleClose(e)} color="primary">
+                            Close
+                        </Button>
+                        <Button  type="submit" onClick={() => this.handleUpdate()} color="primary" autoFocus>
+                            Update
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </div>
         );
-        }
     }
+}
 
 export default withStyles(styles)(VacationEditModal);

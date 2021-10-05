@@ -7,10 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import Container from '@material-ui/core/Container';
-
 import {withStyles, createStyles, WithStyles, Theme} from '@material-ui/core/styles';
-
-
 
 interface AllBlogsProps extends WithStyles<typeof styles> {
     token: string,
@@ -23,7 +20,7 @@ interface AllBlogsState {
 
 const styles = ({palette, spacing}: Theme) => createStyles({
     media: {
-        paddingTop: '56.25%', // 16:9,
+        paddingTop: '56.25%',
         marginTop:'30',
     },
     card: {
@@ -42,7 +39,6 @@ const styles = ({palette, spacing}: Theme) => createStyles({
         marginBottom: 12,
     },
 });
-
 
 class AllBlogs extends React.Component<AllBlogsProps, AllBlogsState> {
     constructor(props:AllBlogsProps){
@@ -67,13 +63,11 @@ class AllBlogs extends React.Component<AllBlogsProps, AllBlogsState> {
         })
         .then((res) => res.json())
         .then((data) => {
-            // console.log('Data: ', data);
             this.setState({blogArray: data})
         })
         .catch((err) => console.log(err));
     }
 
-    
     render() {
         const {classes} =  this.props;
         return(
@@ -103,8 +97,6 @@ class AllBlogs extends React.Component<AllBlogsProps, AllBlogsState> {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    {/* <Button size="small" onClick={(e) =>this.handleOpen(e, record)}>Edit</Button>
-                                    <Button size="small" onClick={() => this.props.handleDelete(record.id)}>Delete</Button> */}
                                 </CardActions>
                             </Card>
                         </Grid>
