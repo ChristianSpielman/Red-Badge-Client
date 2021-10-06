@@ -102,7 +102,7 @@ class AllBlogs extends React.Component<AllBlogsProps, AllBlogsState> {
                         </Grid>
                     ))}
                     </Grid>  
-                </Container>;
+                </Container>
             </div>
         )
     }
